@@ -13,7 +13,17 @@ from vllm.models.deepseek_v41.common.engram import (
     NgramHashState,
     ParallelEngramEmbedding,
 )
+from vllm.models.deepseek_v41.nvidia.engram import (
+    engram_head_shard_rank,
+    gather_engram_hashes,
+)
 from vllm.platforms import current_platform
+
+
+def test_nvidia_engram_compat_exports_common_helpers():
+    """Keep the former backend import path available to out-of-tree backends."""
+    assert engram_head_shard_rank is engram_ops.engram_head_shard_rank
+    assert gather_engram_hashes is engram_ops.gather_engram_hashes
 
 
 def _reference_engram_post_wkv(
